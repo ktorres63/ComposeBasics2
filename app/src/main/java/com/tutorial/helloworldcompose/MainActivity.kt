@@ -17,13 +17,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,15 +40,34 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            app()
+            viewContainer()
         }
     }
 }
 
+@Composable
+fun viewContainer() {
+    Scaffold(
+        topBar = { Toolbar()},
+        content = { Content()}
+
+    )
+
+
+}
+
 @Preview
 @Composable
-fun app() {
-    var counter by remember{
+fun Toolbar() {
+    TopAppBar(title = { Text(text = "Painter description",color= colorResource(id = R.color.white)) })
+
+}
+
+
+
+@Composable
+fun Content() {
+    var counter by rememberSaveable {
         mutableStateOf(1)
     }
     LazyColumn(
@@ -62,12 +85,14 @@ fun app() {
                 contentDescription = "cipreses"
             )
             Row(modifier = Modifier.padding(top = 8.dp)) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_tenk),
-                    contentDescription = "favorites"
-                    ,modifier = Modifier.clickable { counter++ }
+                Image(painter = painterResource(id = R.drawable.ic_tenk),
+                    contentDescription = "favorites",
+                    modifier = Modifier.clickable { counter++ })
+                Text(
+                    text = counter.toString(),
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 4.dp)
                 )
-                Text(text = counter.toString(), color = Color.White, modifier = Modifier.padding(start = 4.dp))
 
             }
             Text(
@@ -78,24 +103,21 @@ fun app() {
                 textAlign = TextAlign.Center
             )
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
 
             ) {
                 Text(text = "Author: ", color = Color.White)
                 Text(text = "Vincent van Gogh", color = Color.White)
             }
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
 
             ) {
                 Text(text = "Technique: ", color = Color.White)
                 Text(text = "Impasto technique", color = Color.White)
             }
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
 
             ) {
                 Text(text = "Cost: ", color = Color.White)
